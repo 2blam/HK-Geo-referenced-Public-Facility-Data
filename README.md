@@ -57,9 +57,9 @@ Bot control:
 <pre>python getAllPubFacilityData.py</pre>
 
 # Requirements
-- pytesser
-- selenium 
-- chrome web driver
+- pytesser [4] - extract the zip files to the directory with getAllPubFacilityData.py
+- selenium  [2]
+- chrome web driver [5] - put the exe file to the directory with getAllPubFacilityData.py 
 
 # Tested Platform
 - Windows 7
@@ -72,3 +72,4 @@ Bot control:
 2. http://docs.seleniumhq.org/
 3. http://www.debasish.in/2012/01/bypass-captcha-using-python-and.html?m=1
 4. http://code.google.com/p/pytesser
+5. https://code.google.com/p/selenium/wiki/ChromeDriver
