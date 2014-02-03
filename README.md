@@ -26,6 +26,20 @@ I adopted Selenium [2] to automate the download process and sed [3] as a referen
 
 <sup>^</sup> there is some known problem in OCR, e.g. J was wrongly recognized as ]
 
+#Convert the coordinates to WGS84
+QGIS[6] can help to convert the coordinates from Hong Kong 1980 Grid System to WGS84. Also, it can help to save it as JSON file. Here is the details:
+
+	1. Layer > Add Delimited Text Layer
+	2. Select the csv file, then press OK button
+	3. Select Hong Kong 1980 Grid System
+	4. In Layer panel, right click the layer, select Save As
+	5. Choose the output path
+	6. In CRS entry, click Browse button, select WGS84
+	7. Press OK button
+
+I used macro [7] to process all the data files.
+
+
 #Alternative solution 
 [This section can be omitted if you are not interested]
 
@@ -65,7 +79,8 @@ Bot control:
 - Windows 7
 
 # Future Work
-- convert the coordinate system from Hong Kong 1980 Grid System (EPSG:2326) to WGS84 EPSG:4326
+- <strike>convert the coordinate system from Hong Kong 1980 Grid System (EPSG:2326) to WGS84 EPSG:4326</strike> <strong>DONE</strong>
+- check if there is any script/command in QGIS to convert the coordinate system and export to JSON
 
 # Reference
 1. http://www1.map.gov.hk/gih3/view/index.jsp
@@ -73,3 +88,5 @@ Bot control:
 3. http://www.debasish.in/2012/01/bypass-captcha-using-python-and.html?m=1
 4. http://code.google.com/p/pytesser
 5. https://code.google.com/p/selenium/wiki/ChromeDriver
+6. http://www.qgis.org/en/site/
+7. http://www.jitbit.com/macro-recorder/
