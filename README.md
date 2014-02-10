@@ -1,6 +1,6 @@
 #Background
 
-This project is to develop an automatic way to download the Hong Kong Geo-referenced Public Facility Data [1]. At the time of writing this document, there are total 79 csv data such as Cycling Sites, Hoilday Camps and Performing Venus. 
+This project is to develop a script to download the Hong Kong Geo-referenced Public Facility Data [1] automatically. At the time of writing this document, there are total 79 csv data such as Cycling Sites, Hoilday Camps and Performing Venus. 
 
 ##About the download process
 
@@ -8,19 +8,19 @@ When the user clicks the download data button, a popup window will then be shown
 
 	1. select the "Unit" (where you come from such as Student, Government and Individual),
 	2. select the "Purpose", and 
-	3. input the validation code.
+	3. refer the captcha image and key in the corresponding validation code.
 
-The user needs to refer the captcha image and key in the corresponding validation. If everything is correct, after pressing the Accept button, the data file can then be downloaded.
+If everything is correct, after pressing the Accept button, the data file can then be downloaded.
 
 #Solution
 
 It is a time consuming task to download all the data manually. At the beginning, I supposed the file can be download easily by just simply refer to the URL such as _action=downloadFile&filename=csv/AIDED_PRS.csv&authCode=RSQY2D&unit=opt9&purpose=opt10. However, it does not work as the authCode cannot be reused after downloaded a data file. 
 
-I adopted Selenium [2] to automate the download process and sed [3] as a reference to dsign the function to decode the captcha. In short, I used the Python script to 
+I adopted Selenium [2] to automate the download process and [3] as a reference to dsign the function to decode the captcha. In short, I used the Python script to 
 
 	1. capture the screen with captcha image*,
 	2. preprocessing the captcha image, i.e. it just contain the characters (black and white image) and then, 
-	3. feed to send to PyTesser which is Optical Character Recognition (OCR) module for Python^
+	3. send to PyTesser which is Optical Character Recognition (OCR) module for Python^
 
 <sup>*</sup> the captcha image cannot be downloaded by referring the <img> tag src attribute. I used the script to take the screenshot and crop the captcha image for further process.
 
@@ -39,8 +39,15 @@ QGIS[6] can help to convert the coordinates from Hong Kong 1980 Grid System to W
 
 I used macro [7] to process all the data files.
 
+#Post-processing the csv files
+A python script (inside Scripts folder) was developed for
+- check the encoding of all public facility data csv files (Note: all the csv files are encoded in UTF-16-LE)
+- check the common and unique column names among all csv files
+- combine all the csv file into a signl excel file
+Please check the program comment for more details.
 
-#Alternative solution 
+
+#Alternative solution to download the data file
 [This section can be omitted if you are not interested]
 
 To download the data file, it is necessary to 
