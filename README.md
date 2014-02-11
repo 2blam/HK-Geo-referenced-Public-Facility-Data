@@ -39,12 +39,16 @@ QGIS[6] can help to convert the coordinates from Hong Kong 1980 Grid System to W
 
 I used macro [7] to process all the data files.
 
-#Post-processing the csv files
-A python script (inside Scripts folder) was developed for
+#Post-processing scripts for csv files
+A number of python scripts (inside scripts folder) were created for
 - check the encoding of all public facility data csv files (Note: all the csv files are encoded in UTF-16-LE)
 - check the common and unique column names among all csv files
-- combine all the csv file into a signl excel file
-Please check the program comment for more details.
+- combine all the csv file into a signl excel / csv file
+- for each public facility, check which constituency area it belongs to and add new property CACODE to store the corresponding information
+
+Note: there is an error in LIBRARY_LCSD_20131213.csv. Please check README.txt in csv_files_err_fixed.zip
+
+For more details, please check the program comments.
 
 
 #Alternative solution to download the data file

@@ -13,13 +13,11 @@
 # 1. No English Name for Recycling Organisations and Collection Points 錦發五金家品有限公司 - 天恩 
 # 2. No English Address for all the country Park
 # 3. Wrong extraction for Tsz Lok Community Residents' Association
-#   This is due to there are the tab is appears in the English name field, it was a delimiter
-#
+#   This is due to there are the tab is appears in the English name field,
+#   Solution: manually update LIBRARY_LCSD_20131213.csv, row# 187
 #  
 # After obtain the csv file
-# 1) need to manually fix issue #3
-# 2) save the file to csv 
-# 3) use qgis to generate the geojson file
+# 1) use qgis to generate the geojson file
 
 import os
 import csv
@@ -188,11 +186,13 @@ def extractColumns(row):
     return cols
 
 
-#combineCSV() - based on the wantedCols, extract the corrsponding data and combine all the data into a single excel file
-def combineCSV():    
+#combineCSV_as_xls_file(outfn) - based on the wantedCols, extract the corrsponding data and combine all the data into a single excel file
+#parameter
+#   outfn - output excel file name, e.g. combine.xls
+def combineCSV_as_xls_file(outfn):    
     base_path = os.path.abspath("./data")
     
-    onlyfiles = [ f for f in listdir(base_path) if isfile(join(base_path,f)) ]
+    onlyfiles = [ f for f in listdir(base_path) if isfile(join(base_path,f)) and f.endswith('.csv') ]
     #write to file
     workbook = xlwt.Workbook()
     sheet = workbook.add_sheet('data')
@@ -251,7 +251,72 @@ def combineCSV():
                         colNum = colNum+1
                         
                     rowNum = rowNum+1
-    workbook.save('combine.xls') 
+    workbook.save(outfn) 
+
+#combineCSV_as_csv_file(outfn) - based on the wantedCols, extract the corrsponding data and combine all the data into a single csv file
+#parameter
+#   outfn - output csv file name, e.g. combine.csv
+def combineCSV_as_csv_file(outfn):    
+    base_path = os.path.abspath("./data")
+    
+    onlyfiles = [ f for f in listdir(base_path) if isfile(join(base_path,f)) and f.endswith('.csv') ]
+    #write to csv file
+    ff = open(outfn, 'wb')
+    ff.write(codecs.BOM_UTF8) #ensure utf-8 output
+    csvWriter = csv.writer(ff)
+
+    #write the header        
+    header = []
+    for data in wantedCols:                   
+        header.append(data[1:-1]) #remove leading and tailing double quote
+    
+    csvWriter.writerow(header)
+
+    # for each of the file 
+    for filepath in onlyfiles:        
+        #form the full file path
+        refFile_path = os.path.join(base_path, filepath)
+
+        #get the file name without extension
+        filename, _ = os.path.splitext(filepath)
+        print filename
+        #open the csv file   
+        with open(refFile_path,'rb') as f:
+            #decode file first
+            sr = Recoder(f, 'utf-16le', 'utf-8')
+            #get the first row
+            headerRow = csv.reader(sr).next()
+            #extract the column name first
+            columnName = extractColumnHeader(headerRow)
+            
+            #get the index about which column we should extract            
+            colIdx = {}
+            for col in columnName:                
+                if (col in wantedCols):                                        
+                    colIdx[col] = columnName.index(col)                     
+            
+            
+            #read rest of the rows in the csv file            
+            for row in sr:
+                if len(row) > 0:
+                    columnData =  extractColumns(row)                      
+
+                    #get the correspondind wanted columns and save to csv file
+                    rowData = []                    
+                    for key in wantedCols:
+                        #get the index                        
+                        idx = colIdx[key]    
+
+                        #data = columnData[idx].replace('"', "")
+                        data =  columnData[idx][1:-1] # remove leading and tailing double quote 
+                        
+                        rowData.append(data)
+                    
+                    #write to file                      
+                    csvWriter.writerow(rowData)
+              
+
+    ff.close()    
     
 
 if __name__ == "__main__":
@@ -262,5 +327,8 @@ if __name__ == "__main__":
     #check_for_differences()    
 
     #combine csv files
-    combineCSV()
+    #combineCSV_as_xls_file('combine.xls')
+
+    #combine csv files and save as single csv file
+    combineCSV_as_csv_file('combine.csv')
     print "done!"    
