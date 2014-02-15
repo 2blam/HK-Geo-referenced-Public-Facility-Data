@@ -2,6 +2,8 @@
 
 This project is to develop a script to download the Hong Kong Geo-referenced Public Facility Data [1] automatically. At the time of writing this document, there are total 79 csv data such as Cycling Sites, Hoilday Camps and Performing Venus. 
 
+After downloaded all the csv file, you can run the getPubFacility_GeoJSON_with_CACODE.py (in scripts folder) to combine all the public facility data in one GeoJSON file which with correct constituency area (CACODE property)
+
 ##About the download process
 
 When the user clicks the download data button, a popup window will then be shown and the user is required to 
@@ -39,8 +41,8 @@ QGIS[6] can help to convert the coordinates from Hong Kong 1980 Grid System to W
 
 I used macro [7] to process all the data files.
 
-#Post-processing scripts for csv files
-A number of python scripts (inside scripts folder) were created for
+#Combine csv files and export GeoJSON
+A python script getPubFacility_GeoJSON_with_CACODE.py (inside scripts folder) was created for
 - check the encoding of all public facility data csv files (Note: all the csv files are encoded in UTF-16-LE)
 - check the common and unique column names among all csv files
 - combine all the csv file into a signl excel / csv file
@@ -50,8 +52,7 @@ Note: there is an error in LIBRARY_LCSD_20131213.csv. Please check README.txt in
 
 For more details, please check the program comments.
 
-
-#Alternative solution to download the data file
+#Alternative solution to download the data files
 [This section can be omitted if you are not interested]
 
 To download the data file, it is necessary to 
@@ -79,12 +80,18 @@ Bot control:
 	6. Go Back to 1. and REPEAT 79 times
 
 # How to run
+To download the data files:
 <pre>python getAllPubFacilityData.py</pre>
 
+To download the combine csv files and generate GeoJSON file:
+<pre>python getPubFacility_GeoJSON_with_CACODE.py</pre>
+
 # Requirements
-- pytesser [4] - extract the zip files to the directory with getAllPubFacilityData.py
+- pytesser [6] - extract the zip files to the directory with getAllPubFacilityData.py
 - selenium  [2]
-- chrome web driver [5] - put the exe file to the directory with getAllPubFacilityData.py 
+- chrome web driver [7] - put the exe file to the directory with getAllPubFacilityData.py 
+- xlwt : for writing xls file [8]
+- chardet: for determine the file encoding [9]
 
 # Tested Platform
 - Windows 7
@@ -97,7 +104,9 @@ Bot control:
 1. http://www1.map.gov.hk/gih3/view/index.jsp
 2. http://docs.seleniumhq.org/
 3. http://www.debasish.in/2012/01/bypass-captcha-using-python-and.html?m=1
-4. http://code.google.com/p/pytesser
-5. https://code.google.com/p/selenium/wiki/ChromeDriver
-6. http://www.qgis.org/en/site/
-7. http://www.jitbit.com/macro-recorder/
+4. http://www.qgis.org/en/site/
+5. http://www.jitbit.com/macro-recorder/
+6. http://code.google.com/p/pytesser
+7. https://code.google.com/p/selenium/wiki/ChromeDriver
+8. https://pypi.python.org/pypi/xlwt
+9. https://pypi.python.org/pypi/chardet
